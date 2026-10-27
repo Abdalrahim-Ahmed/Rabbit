@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>document.documentElement.classList.add('arabic-pending');</script>
+  <style>.arabic-pending body { visibility: hidden; }</style>
+  <title>المساعدة والأسئلة الشائعة | مركز دعم رابيت</title>
+  <meta name="description" content="Find answers to your questions about Rabbit grocery delivery. Orders, delivery, payments, returns and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .accordion-content.open { max-height: 600px; }
+    .accordion-chevron { transition: transform 0.3s ease; }
+    .accordion-chevron.rotated { transform: rotate(180deg); }
+    .category-btn { transition: all 0.2s ease; }
+    .category-btn.active { background-color: #02392E; color: white; }
+    .category-btn:not(.active):hover { background-color: #F0F4F2; color: #02392E; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.4s ease both; }
+  </style>
+</head>
+<body class="bg-[#F8FAF9] text-gray-900 antialiased">
+
+  <!-- ===== CART OVERLAY & DRAWER ===== -->
+  <div id="cartOverlay" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm hidden"></div>
+  <aside id="cartDrawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-2xl text-[#02392E]">shopping_bag</span><h3 class="font-black text-lg text-gray-900">Your Basket</h3></div>
+      <button onclick="closeCartDrawer()" class="p-2 rounded-full hover:bg-gray-200 text-gray-500">✕</button>
+    </div>
+    <div id="cartDrawerItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+    <div class="p-5 border-t border-gray-100 bg-gray-50 space-y-3">
+      <div class="flex justify-between text-sm text-gray-600"><span>Subtotal</span><span id="cartDrawerSubtotal" class="font-bold text-gray-900">0 EGP</span></div>
+      <div class="flex justify-between text-sm text-gray-600"><span>Delivery fee</span><span id="cartDrawerDelivery" class="font-bold text-green-700">FREE</span></div>
+      <div class="flex justify-between text-base font-black text-gray-900 pt-2 border-t border-gray-200"><span>Total</span><span id="cartDrawerTotal" class="text-xl text-[#02392E]">0 EGP</span></div>
+      <button onclick="checkoutOrder()" class="w-full py-4 rounded-2xl bg-[#C2E31E] hover:bg-[#A9CB2C] text-[#02392E] font-black text-sm uppercase tracking-wider shadow-lg transition flex items-center justify-center gap-2">Checkout Now <span>→</span></button>
+    </div>
+  </aside>
+
+  <!-- ===== HEADER ===== -->
+  <header class="sticky top-0 z-50 bg-[#02392E] text-white border-b border-[#0f493d]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-2 group">
+        <img src="logo.png" alt="Rabbit" class="page-logo h-9 w-auto object-contain" />
+        <div class="w-10 h-10 rounded-full bg-[#C2E31E] flex items-center justify-center p-1.5 shadow-md group-hover:scale-105 transition-transform">
+          <svg viewBox="0 0 24 24" class="w-6 h-6 text-[#02392E] fill-current">
+            <path d="M18.8 8.4C18.4 5.9 16.5 4 14.2 4c-1.3 0-2.4.6-3.2 1.6C10.2 4.6 9.1 4 7.8 4 5.5 4 3.6 5.9 3.2 8.4 2.8 11.2 4.1 13.8 6.5 15c.3.9.8 1.8 1.5 2.5v2.5c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-2h1v2c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-2.5c.7-.7 1.2-1.6 1.5-2.5 2.4-1.2 3.7-3.8 3.3-6.6zM8 7c.6 0 1.2.6 1.2 1.5S8.6 10 8 10s-1.2-.6-1.2-1.5S7.4 7 8 7zm8 3c-.6 0-1.2-.6-1.2-1.5S15.4 7 16 7s1.2.6 1.2 1.5-.6 1.5-1.2 1.5z"/>
+          </svg>
+        </div>
+        <span class="text-2xl font-black tracking-tight text-white flex items-baseline">rabbit<span class="text-[#C2E31E] text-3xl leading-none">.</span></span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
+        <a href="category.html" class="text-white/80 hover:text-[#C2E31E] transition">Shop</a>
+        <a href="category.html" class="text-white/80 hover:text-[#C2E31E] transition">Categories</a>
+        <a href="deals.html" class="text-white/80 hover:text-[#C2E31E] transition">Deals</a>
+        <a href="how-it-works.html" class="text-white/80 hover:text-[#C2E31E] transition">How it works</a>
+        <a href="about.html" class="text-white/80 hover:text-[#C2E31E] transition">About</a>
+        <a href="faq.html" class="text-[#C2E31E] transition">Help</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="category.html" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition"><span class="material-symbols-outlined text-xl">search</span></a>
+        <button onclick="openCartDrawer()" class="relative w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition"><span class="material-symbols-outlined text-xl">shopping_bag</span><span class="cart-badge absolute top-1 right-1 bg-[#C2E31E] text-[#02392E] font-black text-[11px] w-5 h-5 rounded-full hidden items-center justify-center shadow-md">0</span></button>
+        <a href="category.html" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#C2E31E] hover:bg-[#A9CB2C] text-[#02392E] font-black text-xs uppercase tracking-wider transition-all shadow-md">Order Now <span>→</span></a>
+        <button id="mobileMenuToggle" class="md:hidden text-white p-2"><span class="material-symbols-outlined text-2xl">menu</span></button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-[#032e25] border-t border-[#0f493d] px-4 py-4 space-y-2">
+      <a href="index.html" class="block px-3 py-2 rounded-lg text-white font-medium hover:bg-white/10">Home</a>
+      <a href="category.html" class="block px-3 py-2 rounded-lg text-white font-medium hover:bg-white/10">Shop</a>
+      <a href="deals.html" class="block px-3 py-2 rounded-lg text-white font-medium hover:bg-white/10">Deals</a>
+      <a href="about.html" class="block px-3 py-2 rounded-lg text-white font-medium hover:bg-white/10">About</a>
+      <a href="faq.html" class="block px-3 py-2 rounded-lg text-white font-medium hover:bg-white/10">Help</a>
+      <a href="404.html" class="block px-3 py-2 rounded-lg text-white font-medium hover:bg-white/10">404</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== HERO ===== -->
+    <section class="bg-[#02392E] pt-16 pb-12 px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-[#C2E31E] text-xs font-black uppercase tracking-widest mb-6">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">support_agent</span>
+          Support Center
+        </span>
+        <h1 class="text-4xl sm:text-5xl font-black text-white mb-4">How can we help?</h1>
+        <p class="text-white/60 mb-8 text-base">Search our help center or browse categories below.</p>
+        <!-- Search bar -->
+        <div class="relative max-w-lg mx-auto">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+          <input 
+            type="text" 
+            id="faqSearch"
+            placeholder="Search for help…" 
+            class="w-full pl-12 pr-4 py-4 rounded-2xl bg-white text-gray-900 placeholder-gray-400 text-sm font-medium shadow-xl focus:outline-none focus:ring-2 focus:ring-[#C2E31E]"
+            oninput="filterFAQs(this.value)"
+          />
+          <button class="absolute right-3 top-1/2 -translate-y-1/2 px-4 py-2 rounded-xl bg-[#C2E31E] text-[#02392E] font-black text-xs uppercase">Search</button>
+        </div>
+        <!-- Quick links -->
+        <div class="flex flex-wrap justify-center gap-2 mt-6">
+          <button class="px-4 py-1.5 rounded-full bg-white/10 text-white/70 text-xs font-semibold hover:bg-white/20 transition" onclick="filterFAQs('delivery')">Delivery time</button>
+          <button class="px-4 py-1.5 rounded-full bg-white/10 text-white/70 text-xs font-semibold hover:bg-white/20 transition" onclick="filterFAQs('cancel')">Cancel order</button>
+          <button class="px-4 py-1.5 rounded-full bg-white/10 text-white/70 text-xs font-semibold hover:bg-white/20 transition" onclick="filterFAQs('payment')">Payment</button>
+          <button class="px-4 py-1.5 rounded-full bg-white/10 text-white/70 text-xs font-semibold hover:bg-white/20 transition" onclick="filterFAQs('refund')">Refunds</button>
+          <button class="px-4 py-1.5 rounded-full bg-white/10 text-white/70 text-xs font-semibold hover:bg-white/20 transition" onclick="filterFAQs('track')">Track order</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TWO-COLUMN LAYOUT ===== -->
+    <section class="py-12 px-4">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- ===== LEFT SIDEBAR ===== -->
+        <aside class="lg:col-span-3">
+          <div class="bg-white rounded-3xl border border-gray-100 p-5 shadow-sm sticky top-28">
+            <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 px-2">Browse Topics</p>
+            <nav class="space-y-1.5" id="categoryNav">
+              <button class="category-btn active w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-3 transition" onclick="switchCategory('orders', this)">
+                <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">package_2</span>
+                Orders & Delivery
+              </button>
+              <button class="category-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 flex items-center gap-3 transition" onclick="switchCategory('account', this)">
+                <span class="material-symbols-outlined text-base">person</span>
+                My Account
+              </button>
+              <button class="category-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 flex items-center gap-3 transition" onclick="switchCategory('payments', this)">
+                <span class="material-symbols-outlined text-base">credit_card</span>
+                Payments
+              </button>
+              <button class="category-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 flex items-center gap-3 transition" onclick="switchCategory('returns', this)">
+                <span class="material-symbols-outlined text-base">assignment_return</span>
+                Returns & Refunds
+              </button>
+              <button class="category-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 flex items-center gap-3 transition" onclick="switchCategory('deals', this)">
+                <span class="material-symbols-outlined text-base">local_offer</span>
+                Browse Deals
+              </button>
+              <button class="category-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 flex items-center gap-3 transition" onclick="switchCategory('general', this)">
+                <span class="material-symbols-outlined text-base">info</span>
+                General
+              </button>
+            </nav>
+
+            <!-- Quick Contact -->
+            <div class="mt-6 pt-5 border-t border-gray-100">
+              <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3 px-2">Need more help?</p>
+              <a href="#contact" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#02392E] text-white text-sm font-bold hover:bg-[#034739] transition">
+                <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">chat</span>
+                Start Live Chat
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        <!-- ===== RIGHT CONTENT ===== -->
+        <div class="lg:col-span-9">
+
+          <!-- Section heading -->
+          <div class="flex items-center gap-4 mb-7" id="sectionHeading">
+            <div class="w-12 h-12 rounded-2xl bg-[#02392E] flex items-center justify-center shadow-md flex-shrink-0">
+              <span class="material-symbols-outlined text-[#C2E31E]" style="font-variation-settings:'FILL' 1">package_2</span>
+            </div>
+            <div>
+              <h2 class="text-2xl font-black text-[#02392E]" id="categoryTitle">Orders & Delivery</h2>
+              <p class="text-sm text-gray-500" id="categoryDesc">Everything you need to know about placing and receiving orders.</p>
+            </div>
+          </div>
+
+          <!-- No results message -->
+          <div id="noResults" class="hidden text-center py-16 text-gray-400">
+            <span class="material-symbols-outlined text-6xl text-gray-200 mb-4 block">search_off</span>
+            <p class="font-bold text-gray-600 text-lg">No results found</p>
+            <p class="text-sm mt-1">Try a different search term or browse categories on the left.</p>
+          </div>
+
+          <!-- ===== FAQ ACCORDION ===== -->
+          <div class="space-y-3" id="faqContainer">
+
+            <!-- FAQ 1 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="orders" data-keywords="delivery time fast long minutes">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">How long does delivery take?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">Rabbit delivers in <strong>20–40 minutes</strong> from the moment you confirm your order. Our dark stores are located throughout Cairo and Alexandria, ensuring near-instant dispatch. If your order is delayed beyond 45 minutes, you'll automatically receive a discount on your next order.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="orders" data-keywords="track order status location where">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">Can I track my order?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">Yes! Once your order is confirmed, you'll receive a tracking link via SMS and in-app notification. You can see your rider's real-time location on a live map directly in the Rabbit app. Estimated arrival time is updated every 30 seconds.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="orders" data-keywords="cancel order cancellation stop">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">How do I cancel my order?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">You can cancel your order within <strong>2 minutes</strong> of placing it through the app (before picking begins). Go to Orders → Your Order → Cancel Order. After picking has started, cancellations are reviewed case by case. Contact live chat for urgent cancellations.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="orders" data-keywords="notification alert sms on the way status update">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">How will I know when my order is on the way?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">You'll receive push notifications at each stage: Order Confirmed, Picking in Progress, Order Dispatched, and Arrived. SMS notifications are sent as backup. You can also check the live order status in the app at any time.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="orders" data-keywords="out of stock unavailable item missing substitute">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">What happens if an item is out of stock?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">If an item goes out of stock after you've ordered, we'll notify you immediately and remove it from your order. You'll be refunded for that item automatically within 24 hours. You can also set a substitution preference in the app to receive a similar product instead.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 6 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="payments" data-keywords="payment method pay card cash wallet">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">What payment methods do you accept?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">We accept a wide range of payment options: Credit & Debit cards (Visa, Mastercard), Cash on Delivery, Vodafone Cash, Orange Money, Etisalat Cash, Fawry, and Rabbit Wallet credits. Apple Pay and Google Pay are available on the mobile app.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 7 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="orders" data-keywords="minimum order value amount basket">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">Is there a minimum order value?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">There is no minimum order value — you can order as little or as much as you like. However, orders under <strong>200 EGP</strong> will incur a small delivery fee of 15 EGP. Orders over 200 EGP qualify for <strong>free delivery</strong>.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 8 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="orders" data-keywords="free delivery shipping cost fee">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">Do you offer free delivery?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">Yes! Delivery is completely <strong>free on all orders over 200 EGP</strong>. For orders below this threshold, a flat 15 EGP delivery fee applies. We also run periodic free delivery promotions — check the Deals page or enable notifications to stay updated.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 9 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="orders" data-keywords="change address delivery location update">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">Can I change my delivery address after placing an order?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">Address changes can only be made within the first <strong>2 minutes</strong> after placing an order, before picking has begun. To request a change, contact our live support chat immediately. Once picking starts, the address is locked for logistical reasons. Always double-check your address before confirming!</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 10 -->
+            <div class="accordion-item faq-item bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:border-gray-200 transition" data-category="general" data-keywords="contact support help customer service chat">
+              <button class="accordion-trigger w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition group" onclick="toggleFAQ(this)">
+                <span class="font-bold text-gray-900 text-sm sm:text-base group-hover:text-[#02392E]">How do I contact Rabbit support?</span>
+                <span class="material-symbols-outlined accordion-chevron text-gray-400 flex-shrink-0">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <div class="px-6 pb-5 border-t border-gray-50">
+                  <p class="text-gray-600 text-sm leading-relaxed mt-4">You can reach us 24/7 through multiple channels: <strong>Live Chat</strong> in the app (fastest response), <strong>Email</strong> at hello@rabbit.eg (reply within 2 hours), or our <strong>Help Center</strong> for self-service answers. For urgent delivery issues, always use live chat for the fastest resolution.</p>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- end faqContainer -->
+
+          <!-- Load More hint -->
+          <div class="mt-8 text-center">
+            <p class="text-sm text-gray-400">Showing 10 of 48 articles &nbsp;·&nbsp; <button class="text-[#02392E] font-bold hover:underline">Load more</button></p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== CONTACT CARDS ===== -->
+    <section id="contact" class="py-16 px-4 bg-white border-t border-gray-100">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl sm:text-3xl font-black text-[#02392E] mb-2">Still need help?</h2>
+          <p class="text-gray-500 text-sm">Our support team is available 24/7 — we're here for you.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+
+          <!-- Live Chat -->
+          <div class="bg-[#02392E] rounded-3xl p-7 text-center text-white group hover:bg-[#034739] transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 duration-200">
+            <div class="w-14 h-14 rounded-2xl bg-[#C2E31E] flex items-center justify-center mx-auto mb-4 shadow-md group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-2xl text-[#02392E]" style="font-variation-settings:'FILL' 1">chat</span>
+            </div>
+            <h3 class="font-black text-lg mb-1">Live Chat</h3>
+            <p class="text-white/60 text-xs leading-relaxed mb-4">Chat with a real support agent instantly. Available 24/7 with average response in under 2 minutes.</p>
+            <button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#C2E31E] hover:bg-[#A9CB2C] text-[#02392E] font-black text-xs uppercase tracking-wider transition">Start Chat →</button>
+          </div>
+
+          <!-- Email Us -->
+          <div class="bg-[#F8FAF9] rounded-3xl p-7 text-center border border-gray-100 group hover:border-[#02392E]/20 hover:shadow-lg transition-all hover:-translate-y-1 duration-200">
+            <div class="w-14 h-14 rounded-2xl bg-[#02392E] flex items-center justify-center mx-auto mb-4 shadow-md group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-2xl text-[#C2E31E]" style="font-variation-settings:'FILL' 1">mail</span>
+            </div>
+            <h3 class="font-black text-lg text-[#02392E] mb-1">Email Us</h3>
+            <p class="text-gray-500 text-xs leading-relaxed mb-4">Send us a message at hello@rabbit.eg and we'll get back to you within 2 business hours.</p>
+            <a href="mailto:hello@rabbit.eg" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#02392E] hover:bg-[#034739] text-white font-black text-xs uppercase tracking-wider transition">Email Now →</a>
+          </div>
+
+          <!-- Help Center -->
+          <div class="bg-[#C2E31E] rounded-3xl p-7 text-center group hover:bg-[#A9CB2C] transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 duration-200">
+            <div class="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mx-auto mb-4 shadow-md group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-2xl text-[#02392E]" style="font-variation-settings:'FILL' 1">support_agent</span>
+            </div>
+            <h3 class="font-black text-lg text-[#02392E] mb-1">Help Center</h3>
+            <p class="text-[#02392E]/70 text-xs leading-relaxed mb-4">Browse self-service articles and guides to find answers quickly without waiting for a response.</p>
+            <a href="faq.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#02392E] hover:bg-[#034739] text-white font-black text-xs uppercase tracking-wider transition">Browse Articles →</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-[#02392E] text-white border-t border-[#0f493d] pt-14 pb-8 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      <div class="col-span-2 md:col-span-1 space-y-3">
+        <a href="index.html" aria-label="الرئيسية"><img src="logo.png" alt="Rabbit" class="h-9 w-auto object-contain" /></a>
+        <p class="text-xs text-gray-400 leading-relaxed">Everyday essentials delivered faster at better prices across Egypt.</p>
+      </div>
+      <div class="space-y-2 text-xs text-gray-300">
+        <h4 class="font-bold text-[#C2E31E] uppercase mb-2">Shop</h4>
+        <p><a href="category.html" class="hover:text-white">Fresh Produce</a></p>
+        <p><a href="deals.html" class="hover:text-white">Today's Deals</a></p>
+        <p><a href="category.html" class="hover:text-white">Snacks & Drinks</a></p>
+      </div>
+      <div class="space-y-2 text-xs text-gray-300">
+        <h4 class="font-bold text-[#C2E31E] uppercase mb-2">Company</h4>
+        <p><a href="about.html" class="hover:text-white">About Us</a></p>
+        <p><a href="how-it-works.html" class="hover:text-white">How It Works</a></p>
+        <p><a href="faq.html" class="hover:text-white">Help & FAQs</a></p>
+      </div>
+      <div class="space-y-2 text-xs text-gray-300">
+        <h4 class="font-bold text-[#C2E31E] uppercase mb-2">Contact</h4>
+        <p class="text-gray-400">Live Chat: In-App</p>
+        <p class="text-gray-400">Email Us: hello@rabbit.eg</p>
+        <p class="text-gray-400">Help Center: <a href="faq.html" class="hover:text-white">Visit FAQ</a></p>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-[#0f493d] text-center text-xs text-gray-400">
+      © 2026 Rabbit Fast Commerce Inc. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+
+    // ---- FAQ Accordion ----
+    function toggleFAQ(trigger) {
+      const item = trigger.closest('.accordion-item');
+      const content = item.querySelector('.accordion-content');
+      const chevron = trigger.querySelector('.accordion-chevron');
+      const isOpen = content.classList.contains('open');
+
+      // Close all
+      document.querySelectorAll('#faqContainer .accordion-content.open').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('#faqContainer .accordion-chevron.rotated').forEach(el => el.classList.remove('rotated'));
+
+      if (!isOpen) {
+        content.classList.add('open');
+        chevron.classList.add('rotated');
+      }
+    }
+
+    // ---- Category switching ----
+    const categoryMeta = {
+      orders:   { title: 'Orders & Delivery', desc: 'Everything you need to know about placing and receiving orders.', icon: 'package_2' },
+      account:  { title: 'My Account', desc: 'Manage your profile, addresses, and preferences.', icon: 'person' },
+      payments: { title: 'Payments', desc: 'Payment methods, billing, and transaction queries.', icon: 'credit_card' },
+      returns:  { title: 'Returns & Refunds', desc: 'How to return items and request refunds.', icon: 'assignment_return' },
+      deals:    { title: 'Browse Deals', desc: 'How to find and redeem offers and discounts.', icon: 'local_offer' },
+      general:  { title: 'General', desc: 'General questions about the Rabbit service.', icon: 'info' },
+    };
+
+    function switchCategory(category, btn) {
+      // Update active button
+      document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Update heading
+      const meta = categoryMeta[category];
+      document.getElementById('categoryTitle').textContent = meta.title;
+      document.getElementById('categoryDesc').textContent = meta.desc;
+
+      // Filter items
+      const allItems = document.querySelectorAll('.faq-item');
+      let visible = 0;
+      allItems.forEach(item => {
+        const cats = item.dataset.category || '';
+        if (cats.includes(category) || category === 'general') {
+          item.style.display = '';
+          visible++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      document.getElementById('noResults').classList.toggle('hidden', visible > 0);
+
+      // Clear search
+      document.getElementById('faqSearch').value = '';
+    }
+
+    // ---- Search ----
+    function filterFAQs(query) {
+      const q = query.toLowerCase().trim();
+      const allItems = document.querySelectorAll('.faq-item');
+      let visible = 0;
+      allItems.forEach(item => {
+        const keywords = (item.dataset.keywords || '').toLowerCase();
+        const titleEl = item.querySelector('.accordion-trigger span');
+        const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+        const match = !q || title.includes(q) || keywords.includes(q);
+        item.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      document.getElementById('noResults').classList.toggle('hidden', visible > 0);
+    }
+
+  </script>
+</body>
+</html>

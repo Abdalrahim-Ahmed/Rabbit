@@ -1,0 +1,425 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script>document.documentElement.classList.add('arabic-pending');</script>
+  <style>.arabic-pending body { visibility: hidden; }</style>
+  <title>خضروات وفواكه طازجة | أساسيات رابيت اليومية</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rabbit: {
+              dark: '#02392E',
+              darkHover: '#034739',
+              lime: '#C2E31E',
+              limeHover: '#A9CB2C',
+              surface: '#F8FAF9',
+              border: '#E5E9E7'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-rabbit-surface text-gray-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-[#C2E31E] selection:text-[#02392E]">
+
+  <!-- ================= HEADER ================= -->
+  <header class="sticky top-0 z-50 bg-[#02392E] text-white border-b border-[#0f493d] transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="group"><img src="logo.png" alt="Rabbit" class="h-9 w-auto object-contain group-hover:scale-105 transition-transform" /></a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
+        <a href="category.html" class="text-[#C2E31E] transition">Shop</a>
+        <a href="category.html" class="text-[#C2E31E] transition">Categories</a>
+        <a href="deals.html" class="text-white/80 hover:text-[#C2E31E] transition">Deals</a>
+        <a href="how-it-works.html" class="text-white/80 hover:text-[#C2E31E] transition">How it works</a>
+        <a href="about.html" class="text-white/80 hover:text-[#C2E31E] transition">About</a>
+        <a href="faq.html" class="text-white/80 hover:text-[#C2E31E] transition">Help</a>
+      </nav>
+
+      <!-- Right Actions: Wishlist, Cart, Order Button -->
+      <div class="flex items-center gap-3">
+        <!-- Search icon -->
+        <a href="category.html" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition">
+          <span class="material-symbols-outlined text-xl">search</span>
+        </a>
+
+        <!-- Wishlist Icon -->
+        <button onclick="showToast('Wishlist view')" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition">
+          <span class="material-symbols-outlined text-xl">favorite_border</span>
+        </button>
+
+        <!-- Cart Icon with Live Counter -->
+        <button onclick="openCartDrawer()" class="relative w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition">
+          <span class="material-symbols-outlined text-xl">shopping_bag</span>
+          <span class="cart-badge absolute top-1 right-1 bg-[#C2E31E] text-[#02392E] font-black text-[11px] w-5 h-5 rounded-full hidden items-center justify-center shadow-md">0</span>
+        </button>
+
+        <!-- Order Now Button -->
+        <button onclick="openCartDrawer()" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#C2E31E] hover:bg-[#A9CB2C] text-[#02392E] font-black text-xs uppercase tracking-wider transition-all transform active:scale-95 shadow-md">
+          <span>Order Now</span>
+          <span class="text-base font-bold">→</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-xs text-gray-500 mb-6 font-medium">
+      <a href="index.html" class="hover:text-[#02392E]">Home</a>
+      <span>/</span>
+      <a href="category.html" class="hover:text-[#02392E]">Categories</a>
+      <span>/</span>
+      <span class="text-[#02392E] font-bold">Fresh Produce</span>
+    </nav>
+
+    <!-- Category Hero Banner -->
+    <section class="bg-gradient-to-r from-emerald-50 via-green-50 to-white rounded-3xl p-6 sm:p-10 mb-8 border border-green-100 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden">
+      <div class="space-y-3 max-w-lg">
+        <h1 class="text-3xl sm:text-5xl font-black text-[#02392E] tracking-tight">Fresh Produce</h1>
+        <p class="text-sm sm:text-base text-gray-600 font-medium leading-relaxed">
+          Farm-fresh fruits and vegetables delivered crisp, chilled, and directly to your door in minutes.
+        </p>
+      </div>
+      <div class="relative w-48 sm:w-64 h-36 sm:h-44 flex items-center justify-center">
+        <img src="https://images.unsplash.com/photo-1597362925123-77861d3fbac7?auto=format&fit=crop&w=400&q=80" alt="Fresh Produce" class="w-full h-full object-cover rounded-2xl shadow-lg border border-white" />
+      </div>
+    </section>
+
+    <!-- Sub-category Pills Filter -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar text-xs font-bold">
+      <button onclick="filterProduce('all', this)" class="subcat-btn px-5 py-2.5 rounded-full bg-[#02392E] text-white shadow-sm transition whitespace-nowrap">
+        All
+      </button>
+      <button onclick="filterProduce('fruits', this)" class="subcat-btn px-5 py-2.5 rounded-full bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 transition whitespace-nowrap">
+        Fruits
+      </button>
+      <button onclick="filterProduce('vegetables', this)" class="subcat-btn px-5 py-2.5 rounded-full bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 transition whitespace-nowrap">
+        Vegetables
+      </button>
+      <button onclick="filterProduce('salads', this)" class="subcat-btn px-5 py-2.5 rounded-full bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 transition whitespace-nowrap">
+        Salads & Herbs
+      </button>
+      <button onclick="filterProduce('organic', this)" class="subcat-btn px-5 py-2.5 rounded-full bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 transition whitespace-nowrap">
+        Organic
+      </button>
+      <button onclick="filterProduce('packaged', this)" class="subcat-btn px-5 py-2.5 rounded-full bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 transition whitespace-nowrap">
+        Cut & Packaged
+      </button>
+    </div>
+
+    <!-- Main Two-Column Layout (Filters + Product Grid) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left Filters Sidebar -->
+      <aside class="lg:col-span-3 bg-white p-6 rounded-3xl border border-gray-200/80 shadow-sm space-y-6">
+        <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+          <h3 class="font-black text-base text-[#02392E]">Filters</h3>
+          <button onclick="resetFilters()" class="text-xs text-[#02392E] font-bold hover:underline">Clear all</button>
+        </div>
+
+        <!-- Price Range Slider -->
+        <div class="space-y-3">
+          <label class="block font-bold text-xs uppercase text-gray-500 tracking-wider">Price Range</label>
+          <input type="range" id="priceRange" min="5" max="100" value="100" oninput="handlePriceFilter(this.value)" class="w-full accent-[#02392E] cursor-pointer" />
+          <div class="flex justify-between text-xs font-bold text-gray-700">
+            <span>0 EGP</span>
+            <span id="priceRangeValue">Max: 100 EGP</span>
+          </div>
+        </div>
+
+        <!-- Brands Checkboxes -->
+        <div class="space-y-3 pt-3 border-t border-gray-100">
+          <label class="block font-bold text-xs uppercase text-gray-500 tracking-wider">Brands</label>
+          <div class="space-y-2 text-xs text-gray-700 font-medium">
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2">
+                <input type="checkbox" checked class="rounded border-gray-300 text-[#02392E] focus:ring-[#02392E]" />
+                Fresh Farm
+              </span>
+              <span class="text-gray-400">12</span>
+            </label>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2">
+                <input type="checkbox" checked class="rounded border-gray-300 text-[#02392E] focus:ring-[#02392E]" />
+                Dole
+              </span>
+              <span class="text-gray-400">8</span>
+            </label>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2">
+                <input type="checkbox" checked class="rounded border-gray-300 text-[#02392E] focus:ring-[#02392E]" />
+                Egyptian Farms
+              </span>
+              <span class="text-gray-400">16</span>
+            </label>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2">
+                <input type="checkbox" class="rounded border-gray-300 text-[#02392E] focus:ring-[#02392E]" />
+                Organic Valley
+              </span>
+              <span class="text-gray-400">6</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Product Type Checkboxes -->
+        <div class="space-y-3 pt-3 border-t border-gray-100">
+          <label class="block font-bold text-xs uppercase text-gray-500 tracking-wider">Product Type</label>
+          <div class="space-y-2 text-xs text-gray-700 font-medium">
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2">
+                <input type="checkbox" checked class="rounded border-gray-300 text-[#02392E] focus:ring-[#02392E]" />
+                Fruits
+              </span>
+              <span class="text-gray-400">24</span>
+            </label>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2">
+                <input type="checkbox" checked class="rounded border-gray-300 text-[#02392E] focus:ring-[#02392E]" />
+                Vegetables
+              </span>
+              <span class="text-gray-400">28</span>
+            </label>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2">
+                <input type="checkbox" class="rounded border-gray-300 text-[#02392E] focus:ring-[#02392E]" />
+                Salads & Herbs
+              </span>
+              <span class="text-gray-400">10</span>
+            </label>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="flex items-center gap-2">
+                <input type="checkbox" class="rounded border-gray-300 text-[#02392E] focus:ring-[#02392E]" />
+                Organic
+              </span>
+              <span class="text-gray-400">6</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Availability Toggle -->
+        <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
+          <span class="font-bold text-xs text-gray-700">In stock only</span>
+          <input type="checkbox" checked class="w-4 h-4 rounded text-[#02392E] focus:ring-[#02392E]" />
+        </div>
+      </aside>
+
+      <!-- Right Products Grid Container -->
+      <section class="lg:col-span-9 space-y-6">
+        
+        <!-- Header Bar: Products count & Sort Dropdown -->
+        <div class="flex items-center justify-between bg-white px-5 py-3.5 rounded-2xl border border-gray-200/80 shadow-sm">
+          <span class="font-bold text-sm text-gray-700" id="productCountHeader">12 products</span>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="text-gray-500 font-medium">Sort by:</span>
+            <select id="sortSelect" onchange="sortProduce(this.value)" class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-gray-800 focus:outline-none focus:border-[#02392E]">
+              <option value="popularity">Popularity</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Products Grid Container -->
+        <div id="produceGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ================= SLIDE-OVER CART DRAWER ================= -->
+  <div id="cartOverlay" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm hidden transition-opacity"></div>
+  <aside id="cartDrawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl text-[#02392E]">shopping_bag</span>
+        <h3 class="font-black text-lg text-gray-900">Your Basket</h3>
+      </div>
+      <button onclick="closeCartDrawer()" class="p-2 rounded-full hover:bg-gray-200 text-gray-500">✕</button>
+    </div>
+
+    <div id="cartDrawerItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+
+    <div class="p-5 border-t border-gray-100 bg-gray-50 space-y-3">
+      <div class="flex justify-between text-sm text-gray-600">
+        <span>Subtotal</span>
+        <span id="cartDrawerSubtotal" class="font-bold text-gray-900">0 EGP</span>
+      </div>
+      <div class="flex justify-between text-sm text-gray-600">
+        <span>Delivery fee</span>
+        <span id="cartDrawerDelivery" class="font-bold text-green-700">FREE</span>
+      </div>
+      <div class="flex justify-between text-base font-black text-gray-900 pt-2 border-t border-gray-200">
+        <span>Total</span>
+        <span id="cartDrawerTotal" class="text-xl text-[#02392E]">0 EGP</span>
+      </div>
+      <button onclick="checkoutOrder()" class="w-full py-4 rounded-2xl bg-[#C2E31E] hover:bg-[#A9CB2C] text-[#02392E] font-black text-sm uppercase tracking-wider shadow-lg transition flex items-center justify-center gap-2">
+        <span>Checkout Now</span>
+        <span>→</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#02392E] text-white border-t border-[#0f493d] pt-14 pb-8 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+      <div class="space-y-4">
+        <a href="index.html" aria-label="الرئيسية"><img src="logo.png" alt="Rabbit" class="h-9 w-auto object-contain" /></a>
+        <p class="text-xs text-gray-400 leading-relaxed">Everyday essentials delivered faster at better prices.</p>
+      </div>
+      <div class="space-y-2 text-xs text-gray-300">
+        <h4 class="font-bold text-[#C2E31E] uppercase">Categories</h4>
+        <p><a href="category.html" class="hover:text-white">Fresh Produce</a></p>
+        <p><a href="deals.html" class="hover:text-white">Today's Deals</a></p>
+        <p><a href="category.html" class="hover:text-white">Dairy & Eggs</a></p>
+      </div>
+      <div class="space-y-2 text-xs text-gray-300">
+        <h4 class="font-bold text-[#C2E31E] uppercase">About</h4>
+        <p><a href="about.html" class="hover:text-white">About Rabbit</a></p>
+        <p><a href="how-it-works.html" class="hover:text-white">How it works</a></p>
+        <p><a href="faq.html" class="hover:text-white">Help & FAQs</a></p>
+      </div>
+      <div class="space-y-2 text-xs text-gray-300">
+        <h4 class="font-bold text-[#C2E31E] uppercase">Customer Care</h4>
+        <p><a href="faq.html" class="hover:text-white">Support Center</a></p>
+        <p><a href="404.html" class="hover:text-white">Status & Service</a></p>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-[#0f493d] text-center text-xs text-gray-400">
+      © 2026 Rabbit Fast Commerce Inc. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    // 12 Products exactly as featured in 02. Category Page
+    const produceData = [
+      { id: 'prod_banana', title: 'Banana', price: 18, category: 'fruits', unit: '1 kg', image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_tomato', title: 'Fresh Tomatoes', price: 12, category: 'vegetables', unit: '1 kg', image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_lettuce', title: 'Lettuce', price: 10, category: 'salads', unit: '1 piece', image: 'https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_cucumber', title: 'Cucumbers', price: 14, category: 'vegetables', unit: '1 kg', image: 'https://images.unsplash.com/photo-1604977042946-1eecc30f269e?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_potato', title: 'Potatoes', price: 14, category: 'vegetables', unit: '1 kg', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_carrot', title: 'Carrots', price: 13, category: 'vegetables', unit: '1 kg', image: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_orange', title: 'Oranges', price: 22, category: 'fruits', unit: '1 kg', image: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_pepper', title: 'Bell Pepper', price: 28, category: 'vegetables', unit: '1 kg', image: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_lemon', title: 'Lemons', price: 18, category: 'fruits', unit: '500g', image: 'https://images.unsplash.com/photo-1590502593747-42a996133562?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_zucchini', title: 'Zucchini', price: 25, category: 'vegetables', unit: '1 kg', image: 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_red_onion', title: 'Red Onions', price: 18, category: 'vegetables', unit: '1 kg', image: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=350&q=80' },
+      { id: 'prod_onion', title: 'Onions', price: 12, category: 'vegetables', unit: '1 kg', image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=350&q=80' }
+    ];
+
+    let currentCategory = 'all';
+    let maxPrice = 100;
+    let sortBy = 'popularity';
+
+    function renderProduce() {
+      const grid = document.getElementById('produceGrid');
+      const countEl = document.getElementById('productCountHeader');
+      if (!grid) return;
+
+      let filtered = produceData.filter(item => {
+        const matchesCat = (currentCategory === 'all' || item.category === currentCategory);
+        const matchesPrice = item.price <= maxPrice;
+        return matchesCat && matchesPrice;
+      });
+
+      if (sortBy === 'price-low') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortBy === 'price-high') {
+        filtered.sort((a, b) => b.price - a.price);
+      }
+
+      if (countEl) countEl.textContent = `${filtered.length} products`;
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="col-span-3 text-center py-16 text-gray-400">No fresh items found matching your filters.</div>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-3xl p-5 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative group";
+        card.innerHTML = `
+          <button onclick="toggleWishlist('${item.id}', this)" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition">
+            <span class="material-symbols-outlined text-xl">favorite_border</span>
+          </button>
+          
+          <a href="product.html" class="block my-4">
+            <img src="${item.image}" alt="${item.title}" class="w-full h-40 object-contain rounded-xl group-hover:scale-105 transition-transform" />
+          </a>
+
+          <div>
+            <a href="product.html" class="font-bold text-sm sm:text-base text-gray-900 hover:text-[#02392E] line-clamp-1">${item.title}</a>
+            <span class="text-xs text-gray-500">${item.unit}</span>
+            
+            <div class="flex items-center justify-between mt-3 mb-4">
+              <span class="text-lg sm:text-xl font-extrabold text-[#02392E]">${item.price} EGP</span>
+            </div>
+
+            <button onclick="addToCart({id: '${item.id}', title: '${item.title}', price: ${item.price}, unit: '${item.unit}', image: '${item.image}'})" class="w-full py-2.5 rounded-2xl bg-[#02392E] hover:bg-[#034739] text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-sm">
+              <span class="text-base font-bold">+</span>
+              <span>Add to cart</span>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterProduce(category, btn) {
+      currentCategory = category;
+      document.querySelectorAll('.subcat-btn').forEach(b => {
+        b.className = 'subcat-btn px-5 py-2.5 rounded-full bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 transition whitespace-nowrap';
+      });
+      btn.className = 'subcat-btn px-5 py-2.5 rounded-full bg-[#02392E] text-white shadow-sm transition whitespace-nowrap';
+      renderProduce();
+    }
+
+    function handlePriceFilter(val) {
+      maxPrice = parseInt(val);
+      document.getElementById('priceRangeValue').textContent = `Max: ${maxPrice} EGP`;
+      renderProduce();
+    }
+
+    function sortProduce(val) {
+      sortBy = val;
+      renderProduce();
+    }
+
+    function resetFilters() {
+      currentCategory = 'all';
+      maxPrice = 100;
+      document.getElementById('priceRange').value = 100;
+      document.getElementById('priceRangeValue').textContent = 'Max: 100 EGP';
+      renderProduce();
+    }
+
+    document.addEventListener('DOMContentLoaded', renderProduce);
+  </script>
+</body>
+</html>
